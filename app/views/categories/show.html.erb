@@ -12,6 +12,6 @@
 
 <%= link_to 'Edit', edit_category_path(@category) %> |
 <%= link_to 'Back', categories_path %> |
-<%= link_to 'Delete', category_path(@category), method: :destroy   %>
+<%= link_to 'Delete', category_path(@category), data: { turbo_method: :delete, turbo_confirm: "Confirm"} %>
 
 

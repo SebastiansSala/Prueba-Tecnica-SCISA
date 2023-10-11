@@ -38,14 +38,12 @@ class CategoriesController < ApplicationController
 
     def destroy
         @category = Category.find(params[:id])
-
         if @category.products.count > 0
             redirect_to @category
             return
-        else
-            @category.destroy
-            redirect_to root_path
         end
+        @category.destroy
+        redirect_to root_path
     end
 
     private 
@@ -58,5 +56,6 @@ class CategoriesController < ApplicationController
         def category_params
             params.require(:category).permit(:name, :description)
         end
+
 end
 

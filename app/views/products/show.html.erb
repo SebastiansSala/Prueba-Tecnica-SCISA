@@ -1,10 +1,9 @@
 
-<h1><%= @product.name %></h1>
-<h2>Category <%= @category.name %></h2>
-<p><%= @product.description %></p>
+<h1><%= @category.name %>: <%= @product.name %></h1>
+<p>Description: <%= @product.description %></p>
 
-<%= link_to 'Edit', edit_category_product_path(@product) %> |
+<%= link_to 'Edit', edit_category_product_path(@category, @product) %> |
 <%= link_to 'Back', category_path(@category) %> |
-<%= link_to 'Delete', category_product_path(@category, @product), method: :delete %>
+<%= link_to 'Delete', category_product_path(@category, @product), data: { turbo_method: :delete, turbo_confirm: "Confirm"} %>
 
 

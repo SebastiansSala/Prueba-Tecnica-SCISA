@@ -1,57 +1,48 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
 
-  # GET /products/:id
   def show
     @category = Category.find(params[:category_id])
     @product = @category.products.find(params[:id])
     render 'products/show'
   end
 
-  # GET /products/new
   def new
     @category = Category.find(params[:category_id])
     @product = @category.products.build
   end
 
-  # GET /products/:id/edit
   def edit
     @category = Category.find(params[:category_id])
     @product = @category.products.find(params[:id])
-    render 'products/edit'
   end
 
-  # POST /products
   def create
     @category = Category.find(params[:category_id])
     @product = @category.products.new(product_params)
     if @product.save
-      redirect_to @category
+      redirect_to product_path(@product)
     else
       render :new
     end
   end
 
-  # PATCH/PUT /products/id
   def update
-    @product = Product.find(params[:id])
+    @category = Category.find(params[:category_id])
+    @product = @category.products.find(params[:id])
     if @product.update(product_params)
-      redirect_to @product
+      redirect_to 
     else
       render :edit
     end
   end
 
-  # DELETE /products/:id
   def destroy
     @category = Category.find(params[:category_id])
     @product = @category.products.find(params[:id])
 
-    if @product.destroy
-      redirect_to products_url, notice: 'Product successfully removed'
-    else
-      redirect_to products_url, notice: 'Product could not be destroyed'
-    end
+    @product.destroy
+    redirect_to @category 
   end
 
   private 
