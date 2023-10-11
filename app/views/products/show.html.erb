@@ -1,0 +1,10 @@
+
+<h1><%= @product.name %></h1>
+<h2>Category <%= @category.name %></h2>
+<p><%= @product.description %></p>
+
+<%= link_to 'Edit', edit_category_product_path(@product) %> |
+<%= link_to 'Back', category_path(@category) %> |
+<%= link_to 'Delete', category_product_path(@category, @product), method: :delete %>
+
+

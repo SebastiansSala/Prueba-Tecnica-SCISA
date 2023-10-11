@@ -1,4 +1,17 @@
 <h1><%= @category.name %></h1>
 <p><%= @category.description %></p>
+
+<ul>
+  <% @category.products.each do |product| %>
+    <li><%= link_to product.name, category_product_path(@category, product) %></li>
+  <% end %>
+  
+   <li style="margin-top: 2rem"><%= link_to 'Add new product', new_category_product_path(@category) %></li>
+ 
+</ul>
+
 <%= link_to 'Edit', edit_category_path(@category) %> |
-<%= link_to 'Back', categories_path %>
+<%= link_to 'Back', categories_path %> |
+<%= link_to 'Delete', category_path(@category), method: :destroy   %>
+
+
