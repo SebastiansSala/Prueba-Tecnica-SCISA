@@ -1,15 +1,15 @@
 class CategoriesController < ApplicationController
+    skip_before_action :verify_authenticity_token, only: [:create, :edit, :update, :destroy]
     before_action :set_category, only: [:show, :edit, :update, :destroy]
 
     def index
-        @categories = Category.all
-
-        render 'categories/index'
+        categories = Category.all
+        render json: categories
     end
 
     def show 
         @category = Category.find(params[:id])
-        render 'categories/show'
+        render json: @category
     end
 
     def new
@@ -22,28 +22,27 @@ class CategoriesController < ApplicationController
     def create
         @category = Category.new(category_params)
         if @category.save
-            redirect_to @category, notice: 'Category successfully created'
+            render json: {message: "Category created", category: @category}
         else
-            render :new
+            render json: {error: "Category not created"}
         end
     end
 
     def update
         if @category.update(category_params)
-            redirect_to @category, notice: 'Category successfully updated'
+            render json: {message: "Category updated", category: @category}
         else
-            render :edit
+            render json: {error: "Category not updated"}
         end
     end
 
     def destroy
         @category = Category.find(params[:id])
         if @category.products.count > 0
-            redirect_to @category
-            return
+            render json: {error: "Cannot delete a category with products"}
         end
         @category.destroy
-        redirect_to root_path
+        render json: {message: "Category deleted", category: @category}
     end
 
     private 

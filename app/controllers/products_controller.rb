@@ -1,29 +1,31 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  skip_before_action :verify_authenticity_token, only: [:create, :update, :destroy]
+  before_action :set_product, only: [:show, :update, :destroy]
+
+  def index
+    category = Category.find(params[:category_id])
+    products = category.products.all
+    render json: products
+  end
 
   def show
     @category = Category.find(params[:category_id])
     @product = @category.products.find(params[:id])
-    render 'products/show'
-  end
-
-  def new
-    @category = Category.find(params[:category_id])
-    @product = @category.products.build
-  end
-
-  def edit
-    @category = Category.find(params[:category_id])
-    @product = @category.products.find(params[:id])
+    if @product
+      render json: @product
+    else
+      render json: {error: "Product not found"}
+    end
+    
   end
 
   def create
     @category = Category.find(params[:category_id])
     @product = @category.products.new(product_params)
     if @product.save
-      redirect_to category_product_path(@category, @product)
+      render json: {message: "Product created", product: @product}
     else
-      render :new
+      render json: {error: "Product not created"}
     end
   end
 
@@ -31,9 +33,9 @@ class ProductsController < ApplicationController
     @category = Category.find(params[:category_id])
     @product = @category.products.find(params[:id])
     if @product.update(product_params)
-      redirect_to category_product_path(@category, @product)
+      render json: {message: "Product updated", product: @product}
     else
-      render :edit
+      render json: {error: "Product not updated"}
     end
   end
 
@@ -42,7 +44,7 @@ class ProductsController < ApplicationController
     @product = @category.products.find(params[:id])
 
     @product.destroy
-    redirect_to @category 
+    render json: {message: "Product deleted", product: @product}
   end
 
   private 

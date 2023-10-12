@@ -1,4 +1,4 @@
-@ruby -x "%~f0" %*
+flyctl@ruby -x "%~f0" %*
 @exit /b %ERRORLEVEL%
 
 #!/usr/bin/env ruby
