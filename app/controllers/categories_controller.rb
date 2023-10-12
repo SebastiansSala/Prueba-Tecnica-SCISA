@@ -50,7 +50,7 @@ class CategoriesController < ApplicationController
         def set_category
             @category = Category.find(params[:id])
         rescue ActiveRecord::RecordNotFound
-            redirect_to categories_path, alert: 'Category not found'
+            redirect_to categories_path
         end
         
         def category_params

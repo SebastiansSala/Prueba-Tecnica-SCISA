@@ -21,7 +21,7 @@ class ProductsController < ApplicationController
     @category = Category.find(params[:category_id])
     @product = @category.products.new(product_params)
     if @product.save
-      redirect_to product_path(@product)
+      redirect_to category_product_path(@category, @product)
     else
       render :new
     end
@@ -31,7 +31,7 @@ class ProductsController < ApplicationController
     @category = Category.find(params[:category_id])
     @product = @category.products.find(params[:id])
     if @product.update(product_params)
-      redirect_to 
+      redirect_to category_product_path(@category, @product)
     else
       render :edit
     end
@@ -49,7 +49,7 @@ class ProductsController < ApplicationController
     def set_product 
       @product = Product.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-      redirect_to products_path, alert: 'Product not found'
+      redirect_to categories_path
     end
 
     def product_params
