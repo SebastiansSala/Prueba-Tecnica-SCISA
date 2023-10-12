@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   # patch 'categories/:category_id/products/:id'
   # put 'categories/:category_id/products/:id'
   # delete 'categories/:category_id/products/:id'
+
+  root 'categories#index'
 end
 
 
