@@ -5,18 +5,17 @@ class ProductsController < ApplicationController
   def index
     category = Category.find(params[:category_id])
     products = category.products.all
-    render json: products
+    if products.count > 0
+      render json: { category: category, products: products }
+    else
+      render json: { category: category, error: "No products found"}
+    end
   end
 
   def show
     @category = Category.find(params[:category_id])
     @product = @category.products.find(params[:id])
-    if @product
-      render json: @product
-    else
-      render json: {error: "Product not found"}
-    end
-    
+    render json: { category: @category, product: @product }
   end
 
   def create
@@ -51,7 +50,7 @@ class ProductsController < ApplicationController
     def set_product 
       @product = Product.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-      redirect_to categories_path
+      render json: { error: "Product not found" }, status: :not_found
     end
 
     def product_params
