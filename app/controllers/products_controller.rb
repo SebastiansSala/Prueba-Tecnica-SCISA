@@ -1,5 +1,6 @@
 class ProductsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create, :update, :destroy]
+  before_action :set_category, only: [:index, :show, :create, :update, :destroy]
   before_action :set_product, only: [:show, :update, :destroy]
 
   def index
@@ -47,6 +48,12 @@ class ProductsController < ApplicationController
   end
 
   private 
+    def set_category
+      @category = Category.find(params[:category_id])
+    rescue ActiveRecord::RecordNotFound
+      render json: { error: "Category not found" }, status: :not_found
+    end
+    
     def set_product 
       @product = Product.find(params[:id])
     rescue ActiveRecord::RecordNotFound

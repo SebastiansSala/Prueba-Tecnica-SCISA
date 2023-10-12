@@ -4,6 +4,9 @@ class CategoriesController < ApplicationController
 
     def index
         categories = Category.all
+        if categories.count == 0
+            render json: {error: "No categories found"}
+        end
         render json: categories
     end
 
@@ -40,9 +43,10 @@ class CategoriesController < ApplicationController
         @category = Category.find(params[:id])
         if @category.products.count > 0
             render json: {error: "Cannot delete a category with products"}
+        else
+            @category.destroy
+            render json: {message: "Category deleted", category: @category}
         end
-        @category.destroy
-        render json: {message: "Category deleted", category: @category}
     end
 
     private 
